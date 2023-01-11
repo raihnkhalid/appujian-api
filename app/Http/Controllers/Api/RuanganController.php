@@ -82,4 +82,11 @@ class RuanganController extends Controller
             return AppHelpers::JsonApi(200, "OK", ["message" => "Success deleted kelas"]);
         }
     }
+
+    public function show()
+    {
+        $ruangan = Ruangan::all();
+        return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_ruangan" => $ruangan]);
+
+    }
 }

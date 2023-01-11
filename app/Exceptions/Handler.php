@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Helpers\JsonApi;
+use App\Helpers\AppHelpers;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof AuthenticationException) {
-            return JsonApi::JsonApi(401, "Unauthorized", ['message' => 'Invalid Access Token']);
+            return AppHelpers::JsonApi(401, "Unauthorized", ['message' => 'Invalid Access Token']);
         }
         return parent::render($request, $exception);
     }

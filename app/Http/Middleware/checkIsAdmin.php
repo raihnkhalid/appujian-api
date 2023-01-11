@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\JsonApi;
+use App\Helpers\AppHelpers;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ class checkIsAdmin
             return $next($request);
         }
 
-        return JsonApi::JsonApi(401, "Unauthorized", ['message' => 'Invalid Access', 'cek' => $user]);
+        return AppHelpers::JsonApi(401, "Unauthorized", ['message' => 'Invalid Access', 'cek' => $user]);
 
     }
 }

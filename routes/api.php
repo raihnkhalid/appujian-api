@@ -52,6 +52,7 @@ Route::post('/user/login', [AuthController::class, 'login']);
 
 // Route for get kelas data
 Route::get('/kelas', [KelasController::class, 'show']);
+Route::get('/ruangan', [RuanganController::class, 'show']);
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('optimize');
