@@ -42,6 +42,10 @@ class RuanganController extends Controller
     public function update($ruangan_id, Request $request)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)){
+            $ruangan = Ruangan::where('id', $ruangan_id)->first();
+            if (!$ruangan) {
+                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Ruangan not found with this id"]);
+            }
 
             $validator = Validator::make($request->all(),
             [
@@ -55,7 +59,6 @@ class RuanganController extends Controller
                 return AppHelpers::JsonApi(400, "ERROR", ["message" => $validator->errors()]);
             }
 
-            $ruangan = Ruangan::find($ruangan_id);
             $ruangan->no_ruangan = $request->no_ruangan;
             $ruangan->kode_ruangan = $request->kode_ruangan;
             $ruangan->kelas_id = $request->kelas;
@@ -72,14 +75,14 @@ class RuanganController extends Controller
     public function destroy($ruangan_id, Request $request)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
-            $ruangan = Ruangan::find($ruangan_id)->first();
+            $ruangan = Ruangan::where('id', $ruangan_id)->first();
             if (!$ruangan) {
-                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Ruangan not found"]);
+                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Ruangan not found with this id"]);
             }
 
             $ruangan->delete();
 
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Success deleted kelas"]);
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Success deleted Ruangan"]);
         }
     }
 

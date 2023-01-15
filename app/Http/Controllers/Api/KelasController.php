@@ -85,6 +85,11 @@ class KelasController extends Controller
     public function update($kelas_id, Request $request, Kelas $kelas)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
+            $kelas = Kelas::where('id', $kelas_id)->first();
+            if (!$kelas) {
+                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Kelas not found with this id"]);
+            }
+
             $validator = Validator::make($request->all(),
             [
                 'namakelas' => 'required|string|unique:kelas,namakelas,'.$kelas_id,
@@ -96,7 +101,6 @@ class KelasController extends Controller
                 return AppHelpers::JsonApi(400, 'Bad_Requests', ['message' => $validator->errors()]);
             }
 
-            $kelas = Kelas::where('id', $kelas_id)->firstOrFail();
             $kelas->namakelas = $request->get('namakelas');
             $kelas->jurusan = $request->get('jurusan');
             $kelas->tingkat = $request->get('tingkat');

@@ -33,7 +33,7 @@ class SiswaController extends Controller
                 return AppHelpers::JsonApi(400, "ERROR", ["message" => $validator->errors()]);
             }
 
-            $pass01 = mb_substr($request->get('namalengkap'), 0, 3);
+            $pass01 = mb_substr($request->get('namalengkap'), 0, 3); // Untuk mengambil 3 huruf pertama pada namalengkap
             $password = $pass01 . $request->get('nis');
 
             $user = User::create([
@@ -43,7 +43,6 @@ class SiswaController extends Controller
             ]);
 
             $user_id = $user['id'];
-
             $siswa = Siswa::create([
                 'user_id' => $user_id,
                 'namalengkap' => $request->get('namalengkap'),
@@ -69,6 +68,11 @@ class SiswaController extends Controller
     public function update($user_id, Request $request, Siswa $siswa)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
+            $siswa = Siswa::where('user_id', $user_id)->first();
+            if (!$siswa) {
+                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Siswa not found with this id"]);
+            }
+
             $validator = Validator::make($request->all(),
             [
                 'namalengkap' => 'required',
@@ -84,23 +88,16 @@ class SiswaController extends Controller
             $pass01 = mb_substr($request->get('namalengkap'), 0, 3);
             $password = $pass01 . $request->get('nis');
 
-            // $user = User::create([
-            //     'username' => $request->get('nis'),
-            //     'password' => Hash::make($password)
-            // ]);
-
-            $user = User::find($user_id);
-            $user->username = $request->nis;
-            $user->password = Hash::make($password);
-            $user->save();
-
-            $siswa = Siswa::where('user_id', $user_id)->firstOrFail();
             $siswa->namalengkap = $request->namalengkap;
             $siswa->kelas_id = $request->kelas;
             $siswa->noabsen = $request->noabsen;
             $siswa->nis = $request->nis;
             $siswa->save();
 
+            $user = User::where('id', $user_id)->first();
+            $user->username = $request->nis;
+            $user->password = Hash::make($password);
+            $user->save();
 
             return AppHelpers::JsonApi(200, "OK", ["message" => "Success Updated Data", "data_siswa" => $siswa]);
         }
@@ -120,13 +117,12 @@ class SiswaController extends Controller
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
             $siswa = Siswa::where('user_id', $user_id)->first();
             if (!$siswa) {
-                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Siswa not found"]);
+                return AppHelpers::JsonApi(400, "ERROR", ["message" => "Siswa not found with this id"]);
             }
             $siswa->delete();
 
-            $user = User::where('id', $user_id)->firstOrFail();
+            $user = User::where('id', $user_id)->first();
             $user->delete();
-
             $user->tokens()->delete();
 
             return AppHelpers::JsonApi(200, "OK", ["message" => "Success Deleted Data"]);
@@ -152,11 +148,10 @@ class SiswaController extends Controller
         $isadmin = User::where(['id' => $user, 'is_admin' => '0'])->first();
         if ($isadmin) {
             $datasiswa = Siswa::where('user_id', $user)->firstOrFail();
-            // return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => $datasiswa]);
             return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => $datasiswa]);
         }
 
         $dataadmin = User::where('id', $user)->first();
-        return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => $dataadmin]);
+        return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_admin" => $dataadmin]);
     }
 }

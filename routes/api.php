@@ -50,7 +50,7 @@ Route::post('/admin/login', [AuthController::class, 'adminLogin']); //done doc
 // Route for user/siswa login
 Route::post('/user/login', [AuthController::class, 'login']); //done doc
 
-// Route for get kelas data
+// Route for get kelas & ruangan data
 Route::get('/kelas', [KelasController::class, 'show']); //done doc
 Route::get('/ruangan', [RuanganController::class, 'show']);
 
