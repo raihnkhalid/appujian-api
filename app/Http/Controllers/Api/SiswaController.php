@@ -134,9 +134,10 @@ class SiswaController extends Controller
     public function getUsersData(Request $request)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
-            $datasiswa = Siswa::all();
-
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => $datasiswa]);
+            $data = Siswa::all();
+            foreach ($data as $datasiswa){
+                return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => ["id" => $datasiswa->id, "user_id" => $datasiswa->user_id, "namalengkap" => $datasiswa->namalengkap, "kelas" => $datasiswa->kelas->namakelas, "noabsen" => $datasiswa->noabsen, "nis" => $datasiswa->nis, "created_at" => $datasiswa->created_at, "updated_at" => $datasiswa->updated_at]]);
+           }
         }
 
         return AppHelpers::JsonUnauthorized();
@@ -147,8 +148,8 @@ class SiswaController extends Controller
         $user = $request->user()->id;
         $isadmin = User::where(['id' => $user, 'is_admin' => '0'])->first();
         if ($isadmin) {
-            $datasiswa = Siswa::where('user_id', $user)->firstOrFail();
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => $datasiswa]);
+            $datasiswa = Siswa::where('user_id', $user)->first();
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => ["id" => $datasiswa->id, "user_id" => $datasiswa->user_id, "namalengkap" => $datasiswa->namalengkap, "kelas" => $datasiswa->kelas->namakelas, "noabsen" => $datasiswa->noabsen, "nis" => $datasiswa->nis, "created_at" => $datasiswa->created_at, "updated_at" => $datasiswa->updated_at]]);
         }
 
         $dataadmin = User::where('id', $user)->first();

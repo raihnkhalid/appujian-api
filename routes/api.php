@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KelasController;
+use App\Http\Controllers\Api\NominasiController;
 use App\Http\Controllers\Api\SiswaController;
 use App\Http\Controllers\Api\RuanganController;
+use App\Models\Nominasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -41,6 +43,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('/ruangan/insert', [RuanganController::class, 'store']);
     Route::post('/ruangan/update/{ruangan_id}', [RuanganController::class, 'update']);
     Route::get('/ruangan/delete/{ruangan_id}', [RuanganController::class, 'destroy']);
+
+    // Route for create, update, and delete data nominasi.
+    Route::post('/nominasi/create', [NominasiController::class, 'store']);
+    Route::get('/nominasi/delete/{nominasi_id}', [NominasiController::class, 'destroy']);
 });
 
 // Route for register and login admin, for register route can only be used once. If there already exist admin accoynt, this route cannot be used
@@ -53,6 +59,7 @@ Route::post('/user/login', [AuthController::class, 'login']); //done doc
 // Route for get kelas & ruangan data
 Route::get('/kelas', [KelasController::class, 'show']); //done doc
 Route::get('/ruangan', [RuanganController::class, 'show']);
+Route::get('/nominasi', [NominasiController::class, 'show']);
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('optimize');

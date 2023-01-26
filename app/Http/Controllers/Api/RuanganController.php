@@ -7,6 +7,7 @@ use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class RuanganController extends Controller
 {
@@ -33,7 +34,7 @@ class RuanganController extends Controller
                 'kapasitas' => $request->get('kapasitas'),
             ]);
 
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Operation Successfully", "data_ruangan" => $ruangan]);
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Operation Successfully", "data_ruangan" => ["id" => $ruangan->id, "no_ruangan" => $ruangan->no_ruangan, "kode_ruangan" => $ruangan->kode_ruangan, "kelas" => $ruangan->kelas->namakelas, "kapasitas" => $ruangan->kapasitas, "created_at" => $ruangan->created_at, "updated_at" => $ruangan->updated_at]]);
         }
 
         return AppHelpers::JsonUnauthorized();
@@ -65,7 +66,7 @@ class RuanganController extends Controller
             $ruangan->kapasitas = $request->kapasitas;
             $ruangan->save();
 
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Success Updated Data", "data_ruangan" => $ruangan]);
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Success Updated Data", "data_ruangan" => ["id" => $ruangan->id, "no_ruangan" => $ruangan->no_ruangan, "kode_ruangan" => $ruangan->kode_ruangan, "kelas" => $ruangan->kelas->namakelas, "kapasitas" => $ruangan->kapasitas, "created_at" => $ruangan->created_at, "updated_at" => $ruangan->updated_at]]);
 
         }
 
@@ -89,6 +90,7 @@ class RuanganController extends Controller
     public function show()
     {
         $ruangan = Ruangan::all();
+
         return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_ruangan" => $ruangan]);
 
     }

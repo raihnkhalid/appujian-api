@@ -17,4 +17,9 @@ class Siswa extends Model
         'nis',
         'kelas_id'
     ];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 }
