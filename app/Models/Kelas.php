@@ -15,19 +15,4 @@ class Kelas extends Model
         'jurusan',
         'tingkat'
     ];
-
-    public function ruangan()
-    {
-        return $this->hasMany(Ruangan::class);
-    }
-
-    public function siswa()
-    {
-        return $this->hasMany(Siswa::class);
-    }
-
-    public function nominasi()
-    {
-        return $this->hasMany(Nominasi::class);
-    }
 }

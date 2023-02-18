@@ -17,17 +17,8 @@ class KelasController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $kelas = Kelas::all();
+        return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_kelas" => $kelas]);
     }
 
     /**
@@ -61,18 +52,6 @@ class KelasController extends Controller
         }
 
         return AppHelpers::JsonUnauthorized();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Kelas  $kelas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, Kelas $kelas)
-    {
-        $kelas = Kelas::all();
-        return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_kelas" => $kelas]);
     }
 
     /**

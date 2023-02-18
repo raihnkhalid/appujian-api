@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 class NominasiController extends Controller
 {
-    public function show()
+    public function index()
     {
         $nominasi = Nominasi::all();
-
         return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_nominasi" => $nominasi]);
     }
 

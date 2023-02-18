@@ -15,7 +15,7 @@ class Ruangan extends Model
         'kelas_id',
         'kapasitas'
     ];
-    protected $with = ['kelas'];
+    protected $with = 'kelas';
 
     public function kelas()
     {

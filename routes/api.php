@@ -61,9 +61,9 @@ Route::post('/admin/login', [AuthController::class, 'adminLogin']); //done doc
 Route::post('/user/login', [AuthController::class, 'login']); //done doc
 
 // Route for get kelas & ruangan data
-Route::get('/kelas', [KelasController::class, 'show']); //done doc
-Route::get('/ruangan', [RuanganController::class, 'show']);
-Route::get('/nominasi', [NominasiController::class, 'show']);
+Route::get('/kelas', [KelasController::class, 'index']); //done doc
+Route::get('/ruangan', [RuanganController::class, 'index']);
+Route::get('/nominasi', [NominasiController::class, 'index']);
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('optimize');
