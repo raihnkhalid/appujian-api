@@ -131,28 +131,14 @@ class SiswaController extends Controller
         return AppHelpers::JsonUnauthorized();
     }
 
-    public function getUsersData(Request $request)
+    public function index(Request $request)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
-            $data = Siswa::all();
-            foreach ($data as $datasiswa){
-                return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => ["id" => $datasiswa->id, "user_id" => $datasiswa->user_id, "namalengkap" => $datasiswa->namalengkap, "kelas" => $datasiswa->kelas->namakelas, "noabsen" => $datasiswa->noabsen, "nis" => $datasiswa->nis, "created_at" => $datasiswa->created_at, "updated_at" => $datasiswa->updated_at]]);
-           }
+            $siswas = Siswa::with(['kelases', 'users'])->get();
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data" => $siswas]);
+        } else {
+            $siswa = Siswa::where('user_id', $request->user()->id)->with(['kelases', 'users'])->first();
+            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data" => $siswa]);
         }
-
-        return AppHelpers::JsonUnauthorized();
-    }
-
-    public function getUserData(Request $request)
-    {
-        $user = $request->user()->id;
-        $isadmin = User::where(['id' => $user, 'is_admin' => '0'])->first();
-        if ($isadmin) {
-            $datasiswa = Siswa::where('user_id', $user)->first();
-            return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_siswa" => ["id" => $datasiswa->id, "user_id" => $datasiswa->user_id, "namalengkap" => $datasiswa->namalengkap, "kelas" => $datasiswa->kelas->namakelas, "noabsen" => $datasiswa->noabsen, "nis" => $datasiswa->nis, "created_at" => $datasiswa->created_at, "updated_at" => $datasiswa->updated_at]]);
-        }
-
-        $dataadmin = User::where('id', $user)->first();
-        return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data_admin" => $dataadmin]);
     }
 }

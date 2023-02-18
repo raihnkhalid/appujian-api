@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\JadwalController;
 use App\Http\Controllers\Api\KelasController;
 use App\Http\Controllers\Api\NominasiController;
 use App\Http\Controllers\Api\SiswaController;
@@ -36,8 +37,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     // Route for get user/siswa data and logout.
     Route::get('/user/logout', [AuthController::class, 'logout']); //done doc
-    Route::get('/users', [SiswaController::class, 'getUsersData']); //done doc
-    Route::get('/user', [SiswaController::class, 'getUserData']); //done doc
+    Route::get('/users', [SiswaController::class, 'index']); //done doc
 
     // Route for create, update, and delete data ruangan.
     Route::post('/ruangan/insert', [RuanganController::class, 'store']);
@@ -47,6 +47,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     // Route for create, update, and delete data nominasi.
     Route::post('/nominasi/create', [NominasiController::class, 'store']);
     Route::get('/nominasi/delete/{nominasi_id}', [NominasiController::class, 'destroy']);
+
+    Route::get('/jadwal', [JadwalController::class, 'index']);
+    Route::post('/jadwal/create', [JadwalController::class, 'store']);
+    Route::get('/jadwal/delete/{id}', [JadwalController::class, 'destroy']);
 });
 
 // Route for register and login admin, for register route can only be used once. If there already exist admin accoynt, this route cannot be used
