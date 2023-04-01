@@ -32,7 +32,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('username', $request->username)->firstOrFail();
-        $token = $user->createToken('auth_token', ['user'], now()->addHours(24));
+        $token = $user->createToken('auth_token', ['user'], now()->addDays(3));
         $datasiswa = Siswa::where('user_id', $request->user()->id)->firstOrFail();
 
         return AppHelpers::JsonApi(200, "OK", ["message" => "Login Success", "data_siswa" => $datasiswa, "token_type" => "Bearer", "token" => $token->plainTextToken, 'expires_at' => $token->accessToken->expires_at]);

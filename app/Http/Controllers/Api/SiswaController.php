@@ -134,10 +134,10 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         if (AppHelpers::isAdmin($request->user()->is_admin)) {
-            $siswas = Siswa::with(['kelases', 'users'])->get();
+            $siswas = Siswa::with(['kelases', 'users', 'ruangans', 'nominasis'])->get();
             return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data" => $siswas]);
         } else {
-            $siswa = Siswa::where('user_id', $request->user()->id)->with(['kelases', 'users'])->first();
+            $siswa = Siswa::where('user_id', $request->user()->id)->with(['users', 'kelases', 'ruangans', 'nominasis'])->first();
             return AppHelpers::JsonApi(200, "OK", ["message" => "Get Data Success", "data" => $siswa]);
         }
     }

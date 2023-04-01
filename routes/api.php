@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\JadwalController;
 use App\Http\Controllers\Api\KelasController;
 use App\Http\Controllers\Api\NominasiController;
+use App\Http\Controllers\Api\PresensiController;
 use App\Http\Controllers\Api\SiswaController;
 use App\Http\Controllers\Api\RuanganController;
 use App\Models\Nominasi;
@@ -51,6 +52,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/jadwal', [JadwalController::class, 'index']);
     Route::post('/jadwal/create', [JadwalController::class, 'store']);
     Route::get('/jadwal/delete/{id}', [JadwalController::class, 'destroy']);
+
+    Route::get('/presensi', [PresensiController::class, 'index'])->name('absensi');
 });
 
 // Route for register and login admin, for register route can only be used once. If there already exist admin accoynt, this route cannot be used

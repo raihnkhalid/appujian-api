@@ -15,10 +15,10 @@ class Nominasi extends Model
         'no_ujian'
     ];
 
-    protected $with = [
-        'siswa',
-        'kelas'
-    ];
+    // protected $with = [
+    //     'siswa',
+    //     'kelas'
+    // ];
 
     public function siswa()
     {

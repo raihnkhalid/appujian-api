@@ -13,7 +13,7 @@ class RuanganController extends Controller
 {
     public function index()
     {
-        $ruangan = Ruangan::all();
+        $ruangan = Ruangan::with('kelas')->get();
         return AppHelpers::JsonApi(200, "OK", ["message" => "Success get data", "data_ruangan" => $ruangan]);
     }
 

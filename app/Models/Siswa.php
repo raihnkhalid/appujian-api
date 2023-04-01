@@ -27,4 +27,14 @@ class Siswa extends Model
     {
         return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
+
+    public function ruangans()
+    {
+        return $this->belongsTo(Ruangan::class, 'kelas_id', 'kelas_id');
+    }
+
+    public function nominasis()
+    {
+        return $this->belongsTo(Nominasi::class, 'id', 'siswa_id');
+    }
 }
